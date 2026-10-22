@@ -1,7 +1,7 @@
-import React from 'react';
+import type { MouseEvent } from 'react';
 
 function FunctionsEventObject() {
-  function handleClick(event: React.MouseEvent) {
+  function handleClick(event: MouseEvent) {
     console.log(event);
     console.log(event.target);
   }

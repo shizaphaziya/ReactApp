@@ -1,15 +1,15 @@
-import React from 'react';
+import type { MouseEvent } from 'react';
 
 function FunctionsEventObjectParams() {
-  function func(p1: string, p2: string, event: React.MouseEvent) {
+  function func(p1: string, p2: string, event: MouseEvent) {
     console.log(p1, p2, event);
   }
 
-  function funcFirst(event: React.MouseEvent, p1: string, p2: string) {
+  function funcFirst(event: MouseEvent, p1: string, p2: string) {
     console.log(event, p1, p2);
   }
 
-  function funcMiddle(p1: string, event: React.MouseEvent, p3: string) {
+  function funcMiddle(p1: string, event: MouseEvent, p3: string) {
     console.log(p1, event, p3);
   }
 
