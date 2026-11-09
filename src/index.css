@@ -1,4 +1,36 @@
 body {
   margin: 0;
   background: #eef1f6;
+  color: #1b2333;
+}
+
+a[href],
+button,
+select,
+input[type='checkbox'],
+input[type='radio'],
+label[for] {
+  cursor: pointer;
+}
+
+:disabled,
+button:disabled,
+input:disabled,
+select:disabled {
+  cursor: not-allowed;
+}
+
+:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

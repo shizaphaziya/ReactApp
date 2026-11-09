@@ -36,7 +36,7 @@ function Home() {
       <section className={styles.hero}>
         <h1>Домашние задания по React</h1>
         <p>
-          Автоматически найдено уроков: <strong>{lessons.length}</strong>. Выберите ДЗ — откроется отдельная
+          Автоматически найдено уроков: <strong>{lessons.length}</strong>. Выберите ДЗ: откроется отдельная
           страница с решением, а иконка ↗ ведёт на оригинальный урок на code.mu.
         </p>
       </section>
