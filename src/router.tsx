@@ -12,10 +12,13 @@ export const router = createBrowserRouter(
       HydrateFallback: () => null,
       children: [
         { index: true, Component: Home },
-        ...lessons.map((lesson) => ({
-          path: String(lesson.num),
-          lazy: async () => ({ Component: (await lesson.load()).default }),
-        })),
+        ...lessons.flatMap((lesson) => {
+          const allPaths = Array.from(new Set([lesson.path, ...lesson.aliases]));
+          return allPaths.map((routePath) => ({
+            path: routePath,
+            lazy: async () => ({ Component: (await lesson.load()).default }),
+          }));
+        }),
         { path: '*', Component: NotFound },
       ],
     },

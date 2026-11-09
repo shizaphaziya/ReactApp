@@ -14,16 +14,20 @@ const sectionTitles: Record<string, string> = {
   Data: 'Данные',
   Components: 'Компоненты',
   Concepts: 'Концепции',
+  Hooks: 'Хуки',
   Styling: 'Стилизация',
   Project: 'Проекты',
 };
 
-const sections = lessons.reduce<{ name: string; items: typeof lessons }[]>((groups, lesson) => {
+const sections = lessons.reduce<
+  { key: string; name: string; book: 'prime' | 'supreme'; items: typeof lessons }[]
+>((groups, lesson) => {
+  const groupKey = `${lesson.book}-${lesson.section}`;
   const last = groups.at(-1);
-  if (last?.name === lesson.section) {
-    return [...groups.slice(0, -1), { name: last.name, items: [...last.items, lesson] }];
+  if (last?.key === groupKey) {
+    return [...groups.slice(0, -1), { ...last, items: [...last.items, lesson] }];
   }
-  return [...groups, { name: lesson.section, items: [lesson] }];
+  return [...groups, { key: groupKey, name: lesson.section, book: lesson.book, items: [lesson] }];
 }, []);
 
 function Home() {
@@ -37,15 +41,18 @@ function Home() {
         </p>
       </section>
       {sections.map((section) => (
-        <section key={section.name} className={styles.card}>
+        <section key={section.key} className={styles.card}>
           <h2 className={styles.cardTitle}>
+            {section.book === 'supreme' ? 'Высший учебник · ' : ''}
             {sectionTitles[section.name] ?? section.name}
             <span className={styles.count}>{section.items.length}</span>
           </h2>
           <div className={styles.grid}>
             {section.items.map((lesson) => (
-              <Link key={lesson.num} to={`/${lesson.num}`} className={styles.tile}>
-                <span className={styles.num}>{lesson.num}</span>
+              <Link key={lesson.id} to={`/${lesson.path}`} className={styles.tile}>
+                <span className={styles.num}>
+                  {lesson.book === 'supreme' ? `S${lesson.num}` : lesson.num}
+                </span>
                 <span className={styles.name}>{humanize(lesson.slug)}</span>
               </Link>
             ))}

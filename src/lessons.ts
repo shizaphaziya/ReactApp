@@ -4,20 +4,52 @@ interface LessonModule {
   default: ComponentType;
 }
 
+export type Book = 'prime' | 'supreme';
+
 export interface Lesson {
+  id: string;
+  book: Book;
   num: number;
   slug: string;
   section: string;
+  path: string;
+  aliases: readonly string[];
   load: () => Promise<LessonModule>;
 }
 
-const pathPattern = /^\.\/components\/(\d+)-([^/]+)\/\2\.tsx$/;
+const primePattern = /^\.\/components\/(\d+)-([^/]+)\/\2\.tsx$/;
+const supremePattern = /^\.\/components\/supreme-(\d+)-([^/]+)\/\2\.tsx$/;
 
-function parsePath(path: string): { num: number; slug: string } | undefined {
-  const match = pathPattern.exec(path);
-  const num = match?.[1];
-  const slug = match?.[2];
-  return num === undefined || slug === undefined ? undefined : { num: Number(num), slug };
+function parsePath(path: string): { book: Book; num: number; slug: string; path: string; aliases: string[] } | undefined {
+  const supremeMatch = supremePattern.exec(path);
+  if (supremeMatch?.[1] !== undefined && supremeMatch[2] !== undefined) {
+    const rawNum = supremeMatch[1];
+    const num = Number(rawNum);
+    const slug = supremeMatch[2];
+    return {
+      book: 'supreme',
+      num,
+      slug,
+      path: `supreme/${num}`,
+      aliases: [`supreme-${num}`, `supreme/${rawNum}`, `supreme-${rawNum}`],
+    };
+  }
+
+  const primeMatch = primePattern.exec(path);
+  if (primeMatch?.[1] !== undefined && primeMatch[2] !== undefined) {
+    const rawNum = primeMatch[1];
+    const num = Number(rawNum);
+    const slug = primeMatch[2];
+    return {
+      book: 'prime',
+      num,
+      slug,
+      path: String(num),
+      aliases: [rawNum],
+    };
+  }
+
+  return undefined;
 }
 
 function getSection(slug: string): string {
@@ -33,6 +65,23 @@ const modules = import.meta.glob<LessonModule>('./components/*/*.tsx');
 export const lessons: readonly Lesson[] = Object.entries(modules)
   .flatMap(([path, load]) => {
     const parsed = parsePath(path);
-    return parsed ? [{ ...parsed, section: getSection(parsed.slug), load }] : [];
+    if (!parsed) return [];
+    return [
+      {
+        id: parsed.book === 'supreme' ? `supreme-${parsed.num}` : String(parsed.num),
+        book: parsed.book,
+        num: parsed.num,
+        slug: parsed.slug,
+        section: getSection(parsed.slug),
+        path: parsed.path,
+        aliases: parsed.aliases,
+        load,
+      },
+    ];
   })
-  .sort((a, b) => a.num - b.num);
+  .sort((a, b) => {
+    if (a.book !== b.book) {
+      return a.book === 'prime' ? -1 : 1;
+    }
+    return a.num - b.num;
+  });
