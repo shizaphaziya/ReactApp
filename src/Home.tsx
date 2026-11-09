@@ -37,7 +37,7 @@ function Home() {
         <h1>Домашние задания по React</h1>
         <p>
           Автоматически найдено уроков: <strong>{lessons.length}</strong>. Выберите ДЗ — откроется отдельная
-          страница с решением.
+          страница с решением, а иконка ↗ ведёт на оригинальный урок на code.mu.
         </p>
       </section>
       {sections.map((section) => (
@@ -49,12 +49,24 @@ function Home() {
           </h2>
           <div className={styles.grid}>
             {section.items.map((lesson) => (
-              <Link key={lesson.id} to={`/${lesson.path}`} className={styles.tile}>
-                <span className={styles.num}>
-                  {lesson.book === 'supreme' ? `S${lesson.num}` : lesson.num}
-                </span>
-                <span className={styles.name}>{humanize(lesson.slug)}</span>
-              </Link>
+              <div key={lesson.id} className={styles.tileWrapper}>
+                <Link to={`/${lesson.path}`} className={styles.tile}>
+                  <span className={styles.num}>
+                    {lesson.book === 'supreme' ? `S${lesson.num}` : lesson.num}
+                  </span>
+                  <span className={styles.name}>{humanize(lesson.slug)}</span>
+                </Link>
+                <a
+                  href={lesson.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.tileExternal}
+                  title="Оригинальный урок на code.mu"
+                  aria-label="Оригинальный урок на code.mu"
+                >
+                  ↗
+                </a>
+              </div>
             ))}
           </div>
         </section>

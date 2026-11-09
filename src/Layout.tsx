@@ -34,6 +34,15 @@ function Layout() {
               <div className={styles.title}>
                 <span className={styles.badge}>{badgeText}</span>
                 <span className={styles.slug}>{humanize(current.slug)}</span>
+                <a
+                  href={current.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.originalLink}
+                  title="Оригинальный урок на code.mu"
+                >
+                  code.mu ↗
+                </a>
               </div>
               <nav className={styles.nav}>
                 {prev ? (

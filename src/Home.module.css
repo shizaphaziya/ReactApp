@@ -48,11 +48,19 @@
   gap: 10px;
 }
 
+.tileWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .tile {
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 14px;
+  padding: 10px 42px 10px 14px;
   border: 1px solid #dde2ec;
   border-radius: 12px;
   background: #fafbfd;
@@ -69,6 +77,28 @@
   background: #fff;
   box-shadow: 0 4px 14px rgb(79 70 229 / 16%);
   transform: translateY(-2px);
+}
+
+.tileExternal {
+  position: absolute;
+  right: 10px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    color 0.15s,
+    background-color 0.15s;
+}
+
+.tileExternal:hover {
+  color: #4f46e5;
+  background-color: #eef2ff;
 }
 
 .num {

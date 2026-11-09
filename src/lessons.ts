@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import { lessonUrls } from './lessonUrls';
 
 interface LessonModule {
   default: ComponentType;
@@ -13,6 +14,7 @@ export interface Lesson {
   slug: string;
   section: string;
   path: string;
+  url: string;
   aliases: readonly string[];
   load: () => Promise<LessonModule>;
 }
@@ -66,6 +68,9 @@ export const lessons: readonly Lesson[] = Object.entries(modules)
   .flatMap(([path, load]) => {
     const parsed = parsePath(path);
     if (!parsed) return [];
+    const urlKey = `${parsed.book}-${parsed.num}`;
+    const url = lessonUrls[urlKey] ?? `https://code.mu/ru/javascript/framework/react/book/${parsed.book}/`;
+
     return [
       {
         id: parsed.book === 'supreme' ? `supreme-${parsed.num}` : String(parsed.num),
@@ -74,6 +79,7 @@ export const lessons: readonly Lesson[] = Object.entries(modules)
         slug: parsed.slug,
         section: getSection(parsed.slug),
         path: parsed.path,
+        url,
         aliases: parsed.aliases,
         load,
       },

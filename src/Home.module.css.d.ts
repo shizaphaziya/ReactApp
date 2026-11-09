@@ -9,6 +9,8 @@ declare const styles: {
   readonly notFound: string;
   readonly num: string;
   readonly tile: string;
+  readonly tileExternal: string;
+  readonly tileWrapper: string;
 };
 
 export default styles;

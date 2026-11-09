@@ -9,6 +9,7 @@ declare const styles: {
   readonly nav: string;
   readonly navDisabled: string;
   readonly navLink: string;
+  readonly originalLink: string;
   readonly shell: string;
   readonly slug: string;
   readonly title: string;
